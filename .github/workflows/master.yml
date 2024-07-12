@@ -32,4 +32,4 @@ jobs:
        END
     - name: Run deploy
       run:
-        ssh taget "cd cicd_project/cicd/ && docker-compose down && git pull && git pull && docker-compose build && docker-compose up -d --force-recreate"
+        ssh target "cd cicd_project/cicd/ && docker-compose down && git pull && git pull && docker-compose build && docker-compose up -d --force-recreate"
