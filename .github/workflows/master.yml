@@ -1,3 +1,109 @@
+###name : Continuous Integration
+###
+###on:
+###  push:
+###    branches:
+###      - jagannath
+###
+###concurrency:
+###  group: jagannath
+###  cancel-in-progress: true
+###
+###jobs:
+###  name: Deploy
+###  runs-on: ubuntu-latest
+###  steps:
+###    -name: Configure SSH
+###    env:
+###      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+###      SSH_HOST: ${{ secrets.SSH_HOST }}
+###      SSH_USER: ${{ secrets.SSH_USER }}
+###    run:
+###       mkdir -p !/.ssh/
+###       echo "$SSH_PRIVATE_KEY" > ~/.ssh/github
+###       chmod 600 ~/.ssh/github
+###       cat >>~/.ssh/config <<END
+###       Host target
+###         HostName $SSH_HOST
+###         User $SSH_USER
+###         IdentityFile ~/.ssh/github
+###         LogLevel ERROR
+###         StrictHostKeyChecking no
+###       END
+###    - name: Run deploy
+###      run:
+###        ssh target "cd cicd_project/cicd/ && docker-compose down && git pull && git pull && docker-compose build && docker-compose up -d --force-recreate"
+##name: Continuous Integration
+##
+##on:
+##  push:
+##    branches:
+##      - jagannath
+##
+##concurrency:
+##  group: jagannath
+##  cancel-in-progress: true
+##
+##jobs:
+##  deploy:
+##    runs-on: ubuntu-latest
+##    steps:
+##      - name: Configure SSH
+##        env:
+##          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+##          SSH_HOST: ${{ secrets.SSH_HOST }}
+##          SSH_USER: ${{ secrets.SSH_USER }}
+##        run: |
+##          mkdir -p ~/.ssh/
+##          echo "$SSH_PRIVATE_KEY" > ~/.ssh/github
+##          chmod 600 ~/.ssh/github
+##          cat >> ~/.ssh/config <<END
+##          Host target
+##            HostName $SSH_HOST
+##            User $SSH_USER
+##            IdentityFile ~/.ssh/github
+##            LogLevel ERROR
+##            StrictHostKeyChecking no
+##          END
+##      - name: Run deploy
+##        run: |
+###          ssh target "cd cicd_project/cicd/ && docker-compose down && git pull && docker-compose build && docker-compose up -d --force-recreate"
+##           ssh target "cd cicd_project/cicd/ && git pull && sudo systemctl restart your-service"
+#name: Continuous Integration
+#
+#on:
+#  push:
+#    branches:
+#      - jagannath
+#
+#concurrency:
+#  group: jagannath
+#  cancel-in-progress: true
+#
+#jobs:
+#  deploy:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Configure SSH
+#        env:
+#          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+#          SSH_HOST: ${{ secrets.SSH_HOST }}
+#          SSH_USER: ${{ secrets.SSH_USER }}
+#        run: |
+#          mkdir -p ~/.ssh/
+#          echo "$SSH_PRIVATE_KEY" > ~/.ssh/github
+#          chmod 600 ~/.ssh/github
+#          cat >> ~/.ssh/config <<END
+#          Host target
+#            HostName $SSH_HOST
+#            User $SSH_USER
+#            IdentityFile ~/.ssh/github
+#            LogLevel ERROR
+#            StrictHostKeyChecking no
+#          END
+#      - name: Run deploy
+#        run: |
+#          ssh target "cd cicd_project/cicd/ && git pull && sudo systemctl restart your-service"
 #name: Continuous Integration
 #
 #on:
@@ -33,14 +139,12 @@
 #      - name: Run deploy
 #        run: |
 #          ssh target << 'EOF'
-#            sudo chmod -R 777 /home/ubuntu/cicd_project/cicd
+#            sudo chmod -R 755 /home/ubuntu/cicd_project/cicd
 #            git config --global --add safe.directory /home/ubuntu/cicd_project/cicd
-#            source /home/ubuntu/cicd_project/cicd_env/bin/activate
 #            cd /home/ubuntu/cicd_project/cicd
 #            git pull
-#            screen -S 143264 -dm bash -c 'python manage.py runserver 0.0.0.0:2914'
+#            sudo systemctl /home/ubuntu/cicd_project/cicd_env/bin/python manage.py runserver 0.0.0.0:2914
 #          EOF
-
 name: Continuous Integration
 
 on:
@@ -78,10 +182,9 @@ jobs:
           ssh target << 'EOF'
             sudo chmod -R 777 /home/ubuntu/cicd_project/cicd
             git config --global --add safe.directory /home/ubuntu/cicd_project/cicd
-            screen -S 142815 -X stuff 'pkill -f "python manage.py runserver 0.0.0.0:2914"$(printf \\r)'
-            sleep 5 
+            source /home/ubuntu/cicd_project/cicd_env/bin/activate
             cd /home/ubuntu/cicd_project/cicd
             git pull
-            screen -S 142815 -X stuff 'source /home/ubuntu/cicd_project/cicd_env/bin/activate && python manage.py runserver 0.0.0.0:2914$(printf \\r)' 
+            python manage.py runserver 0.0.0.0:2914 
           EOF
 
