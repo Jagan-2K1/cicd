@@ -104,6 +104,47 @@
 #      - name: Run deploy
 #        run: |
 #          ssh target "cd cicd_project/cicd/ && git pull && sudo systemctl restart your-service"
+#name: Continuous Integration
+#
+#on:
+#  push:
+#    branches:
+#      - jagannath
+#
+#concurrency:
+#  group: jagannath
+#  cancel-in-progress: true
+#
+#jobs:
+#  deploy:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Configure SSH
+#        env:
+#          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+#          SSH_HOST: ${{ secrets.SSH_HOST }}
+#          SSH_USER: ${{ secrets.SSH_USER }}
+#        run: |
+#          mkdir -p ~/.ssh/
+#          echo "$SSH_PRIVATE_KEY" > ~/.ssh/github
+#          chmod 600 ~/.ssh/github
+#          cat >> ~/.ssh/config <<END
+#          Host target
+#            HostName $SSH_HOST
+#            User $SSH_USER
+#            IdentityFile ~/.ssh/github
+#            LogLevel ERROR
+#            StrictHostKeyChecking no
+#          END
+#      - name: Run deploy
+#        run: |
+#          ssh target << 'EOF'
+#            sudo chmod -R 755 /home/ubuntu/cicd_project/cicd
+#            git config --global --add safe.directory /home/ubuntu/cicd_project/cicd
+#            cd /home/ubuntu/cicd_project/cicd
+#            git pull
+#            sudo systemctl /home/ubuntu/cicd_project/cicd_env/bin/python manage.py runserver 0.0.0.0:2914
+#          EOF
 name: Continuous Integration
 
 on:
@@ -143,5 +184,6 @@ jobs:
             git config --global --add safe.directory /home/ubuntu/cicd_project/cicd
             cd /home/ubuntu/cicd_project/cicd
             git pull
-            sudo systemctl /home/ubuntu/cicd_project/cicd_env/bin/python manage.py runserver 0.0.0.0:2914
+            source /home/ubuntu/cicd_project/cicd_env/bin/activate
+            python manage.py runserver 0.0.0.0:2914
           EOF
