@@ -140,7 +140,7 @@ jobs:
         run: |
           ssh target << 'EOF'
             git config --global --add safe.directory /home/ubuntu/cicd_project/cicd
-            cd cicd_project/cicd/
+            cd /home/ubuntu/cicd_project/cicd
             git pull
             sudo systemctl /home/ubuntu/cicd_project/cicd_env/bin/python manage.py runserver 0.0.0.0:2914
           EOF
