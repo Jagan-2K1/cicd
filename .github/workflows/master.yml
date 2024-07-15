@@ -1,4 +1,39 @@
-##name : Continuous Integration
+###name : Continuous Integration
+###
+###on:
+###  push:
+###    branches:
+###      - jagannath
+###
+###concurrency:
+###  group: jagannath
+###  cancel-in-progress: true
+###
+###jobs:
+###  name: Deploy
+###  runs-on: ubuntu-latest
+###  steps:
+###    -name: Configure SSH
+###    env:
+###      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+###      SSH_HOST: ${{ secrets.SSH_HOST }}
+###      SSH_USER: ${{ secrets.SSH_USER }}
+###    run:
+###       mkdir -p !/.ssh/
+###       echo "$SSH_PRIVATE_KEY" > ~/.ssh/github
+###       chmod 600 ~/.ssh/github
+###       cat >>~/.ssh/config <<END
+###       Host target
+###         HostName $SSH_HOST
+###         User $SSH_USER
+###         IdentityFile ~/.ssh/github
+###         LogLevel ERROR
+###         StrictHostKeyChecking no
+###       END
+###    - name: Run deploy
+###      run:
+###        ssh target "cd cicd_project/cicd/ && docker-compose down && git pull && git pull && docker-compose build && docker-compose up -d --force-recreate"
+##name: Continuous Integration
 ##
 ##on:
 ##  push:
@@ -10,29 +45,30 @@
 ##  cancel-in-progress: true
 ##
 ##jobs:
-##  name: Deploy
-##  runs-on: ubuntu-latest
-##  steps:
-##    -name: Configure SSH
-##    env:
-##      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-##      SSH_HOST: ${{ secrets.SSH_HOST }}
-##      SSH_USER: ${{ secrets.SSH_USER }}
-##    run:
-##       mkdir -p !/.ssh/
-##       echo "$SSH_PRIVATE_KEY" > ~/.ssh/github
-##       chmod 600 ~/.ssh/github
-##       cat >>~/.ssh/config <<END
-##       Host target
-##         HostName $SSH_HOST
-##         User $SSH_USER
-##         IdentityFile ~/.ssh/github
-##         LogLevel ERROR
-##         StrictHostKeyChecking no
-##       END
-##    - name: Run deploy
-##      run:
-##        ssh target "cd cicd_project/cicd/ && docker-compose down && git pull && git pull && docker-compose build && docker-compose up -d --force-recreate"
+##  deploy:
+##    runs-on: ubuntu-latest
+##    steps:
+##      - name: Configure SSH
+##        env:
+##          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+##          SSH_HOST: ${{ secrets.SSH_HOST }}
+##          SSH_USER: ${{ secrets.SSH_USER }}
+##        run: |
+##          mkdir -p ~/.ssh/
+##          echo "$SSH_PRIVATE_KEY" > ~/.ssh/github
+##          chmod 600 ~/.ssh/github
+##          cat >> ~/.ssh/config <<END
+##          Host target
+##            HostName $SSH_HOST
+##            User $SSH_USER
+##            IdentityFile ~/.ssh/github
+##            LogLevel ERROR
+##            StrictHostKeyChecking no
+##          END
+##      - name: Run deploy
+##        run: |
+###          ssh target "cd cicd_project/cicd/ && docker-compose down && git pull && docker-compose build && docker-compose up -d --force-recreate"
+##           ssh target "cd cicd_project/cicd/ && git pull && sudo systemctl restart your-service"
 #name: Continuous Integration
 #
 #on:
@@ -67,8 +103,7 @@
 #          END
 #      - name: Run deploy
 #        run: |
-##          ssh target "cd cicd_project/cicd/ && docker-compose down && git pull && docker-compose build && docker-compose up -d --force-recreate"
-#           ssh target "cd cicd_project/cicd/ && git pull && sudo systemctl restart your-service"
+#          ssh target "cd cicd_project/cicd/ && git pull && sudo systemctl restart your-service"
 name: Continuous Integration
 
 on:
@@ -103,4 +138,9 @@ jobs:
           END
       - name: Run deploy
         run: |
-          ssh target "cd cicd_project/cicd/ && git pull && sudo systemctl restart your-service"
+          ssh target << 'EOF'
+            git config --global --add safe.directory /home/***/cicd_project/cicd
+            cd /home/***/cicd_project/cicd/
+            git pull
+            sudo systemctl restart your-service
+          EOF
