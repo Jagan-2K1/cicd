@@ -136,9 +136,9 @@ jobs:
             LogLevel ERROR
             StrictHostKeyChecking no
           END
+          sudo chown -R $SSH_USER:$SSH_USER /home/ubuntu/cicd_project/cicd/
       - name: Run deploy
         run: |
-          sudo chown -R $SSH_USER:$SSH_USER /home/ubuntu/cicd_project/cicd/
           ssh target << 'EOF'
             git config --global --add safe.directory /home/ubuntu/cicd_project/cicd/
             cd /home/ubuntu/cicd_project/cicd/
