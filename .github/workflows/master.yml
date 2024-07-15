@@ -139,8 +139,8 @@ jobs:
       - name: Run deploy
         run: |
           ssh target << 'EOF'
-            git config --global --add safe.directory /home/ubuntu/cicd_project/cicd
             sudo chmod -R 755 /home/ubuntu/cicd_project/cicd
+            git config --global --add safe.directory /home/ubuntu/cicd_project/cicd
             cd /home/ubuntu/cicd_project/cicd
             git pull
             source /home/ubuntu/cicd_project/cicd_env/bin/activate
