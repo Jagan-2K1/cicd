@@ -185,5 +185,5 @@ jobs:
             source /home/ubuntu/cicd_project/cicd_env/bin/activate
             cd /home/ubuntu/cicd_project/cicd
             git pull
-            screen -S 142177 -dm bash -c 'python manage.py runserver 0.0.0.0:2914' 
+            screen -S 143264 -dm bash -c 'python manage.py runserver 0.0.0.0:2914' 
           EOF
