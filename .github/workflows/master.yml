@@ -139,8 +139,10 @@ jobs:
       - name: Run deploy
         run: |
           ssh target << 'EOF'
+            sudo chown -R $SSH_USER:$SSH_USER /home/ubuntu/cicd_project/cicd/
             git config --global --add safe.directory /home/ubuntu/cicd_project/cicd/
             cd /home/ubuntu/cicd_project/cicd/
             git pull
+            source /home/ubuntu/cicd_project/cicd_env/bin/activate
             sudo systemctl /home/ubuntu/cicd_project/cicd_env/bin/python manage.py runserver 0.0.0.0:2914
           EOF
