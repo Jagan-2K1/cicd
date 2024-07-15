@@ -14,11 +14,11 @@ jobs:
   runs-on: ubuntu-latest
   steps:
     -name: Configure SSH
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        SSH_HOST: ${{ secrets.SSH_HOST }}
-        SSH_USER: ${{ secrets.SSH_USER }}
-     run:
+    env:
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+    run:
        mkdir -p !/.ssh/
        echo "$SSH_PRIVATE_KEY" > ~/.ssh/github
        chmod 600 ~/.ssh/github
