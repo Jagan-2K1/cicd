@@ -79,7 +79,7 @@ jobs:
             sudo chmod -R 777 /home/ubuntu/cicd_project/cicd
             git config --global --add safe.directory /home/ubuntu/cicd_project/cicd
             screen -S 142815 -X stuff 'pkill -f "python manage.py runserver 0.0.0.0:2914"$(printf \\r)'
-            source /home/ubuntu/cicd_project/cicd_env/bin/activate
+            sleep 5 
             cd /home/ubuntu/cicd_project/cicd
             git pull
             screen -S 142815 -X stuff 'source /home/ubuntu/cicd_project/cicd_env/bin/activate && python manage.py runserver 0.0.0.0:2914$(printf \\r)' 
