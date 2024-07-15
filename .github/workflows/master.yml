@@ -67,4 +67,5 @@ jobs:
           END
       - name: Run deploy
         run: |
-          ssh target "cd cicd_project/cicd/ && docker-compose down && git pull && docker-compose build && docker-compose up -d --force-recreate"
+#          ssh target "cd cicd_project/cicd/ && docker-compose down && git pull && docker-compose build && docker-compose up -d --force-recreate"
+           ssh target "cd cicd_project/cicd/ && git pull && sudo systemctl restart your-service"
