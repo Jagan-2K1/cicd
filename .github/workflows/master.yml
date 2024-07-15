@@ -138,8 +138,8 @@ jobs:
           END
       - name: Run deploy
         run: |
+          sudo chown -R $SSH_USER:$SSH_USER /home/ubuntu/cicd_project/cicd/
           ssh target << 'EOF'
-            sudo chown -R $SSH_USER:$SSH_USER /home/ubuntu/cicd_project/cicd/
             git config --global --add safe.directory /home/ubuntu/cicd_project/cicd/
             cd /home/ubuntu/cicd_project/cicd/
             git pull
