@@ -142,5 +142,5 @@ jobs:
             git config --global --add safe.directory /home/***/cicd_project/cicd
             cd cicd_project/cicd/
             git pull
-            sudo systemctl env
+            sudo systemctl manage.py runserver
           EOF
