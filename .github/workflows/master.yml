@@ -88,7 +88,7 @@ jobs:
               # Start the server again in the screen session
               screen -S 142815 -X stuff 'source /home/ubuntu/cicd_project/cicd_env/bin/activate && python manage.py runserver 0.0.0.0:2914$(printf \\r)'
             else
-              echo "No screen session found. Aborting."
+              echo "No screen session found. Aborting. Hi jagannath"
               exit 1
             fi
           EOF
