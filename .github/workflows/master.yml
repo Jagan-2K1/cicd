@@ -136,7 +136,6 @@ jobs:
             LogLevel ERROR
             StrictHostKeyChecking no
           END
-
       - name: Run deploy
         run: |
 #          sudo chown -R $SSH_USER:$SSH_USER /home/ubuntu/cicd_project/cicd
