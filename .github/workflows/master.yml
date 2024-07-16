@@ -89,7 +89,7 @@ jobs:
               sudo screen -S 150841 -X stuff source /home/ubuntu/cicd_project/cicd_env/bin/activate
               echo "env activated."
               # Change to the project directory and pull the latest changes
-              cd /home/ubuntu/cicd_project/cicd_pro/cicd
+              cd /home/ubuntu/cicd_project/cicd_pro/cicd_pro/cicd/
               git pull
               sudo screen -S 150841 -X stuff python manage.py runserver 0.0.0.0:2914
               echo "deployed."
