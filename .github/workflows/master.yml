@@ -271,13 +271,13 @@ jobs:
       - name: Run deploy
         run: |
           ssh target << 'EOF'
+          sudo pkill -f 'python manage.py runserver 0.0.0.0:2914'
+          echo "service stopped"
+          sleep 5  # Wait for the server to stop
+          #################################################################
             # Check if the screen session exists
             if sudo screen -list | grep -q 150841; then
               echo "Screen session found. Proceeding with deployment."
-              #################################################################
-              # Stop the running server in the screen session
-              sudo screen -S 150841 -X stuff pkill -f python manage.py runserver 0.0.0.0:2914
-              sleep 5  # Wait for the server to stop
               ##################################################################
               # Force pull the latest changes
               cd /home/ubuntu/cicd_project/cicd/
