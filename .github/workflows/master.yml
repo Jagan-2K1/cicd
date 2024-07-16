@@ -73,6 +73,9 @@ jobs:
             LogLevel ERROR
             StrictHostKeyChecking no
           END
+      - name: Checking Screen
+        run: |
+          ssh target "screen -list"
       - name: Run deploy
         run: |
           ssh target << 'EOF'
