@@ -92,7 +92,7 @@ jobs:
               cd /home/ubuntu/cicd_project/cicd
               git pull
               sudo screen -S 150841 -X stuff python manage.py runserver 0.0.0.0:2914
-              echo "deployed activated."
+              echo "deployed."
             else
               echo "No screen session found. Aborting. Hi jagannath"
               exit 1
