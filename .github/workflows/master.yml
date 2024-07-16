@@ -80,19 +80,20 @@ jobs:
         run: |
           ssh target << 'EOF'
             # Check if the screen session exists
-            if sudo screen -list | grep -q 146494; then
+            if sudo screen -list | grep -q 150841; then
               echo "Screen session found. Proceeding with deployment."
               # Stop the running server in the screen session
-              sudo screen -S 146494 stuff 'pkill -f "python manage.py runserver 0.0.0.0:2914"$(printf \\r)'
+              sudo screen -S 150841 stuff 'pkill -f "python manage.py runserver 0.0.0.0:2914"$(printf \\r)'
               sleep 5  # Wait for the server to stop
               # Change to the project directory and pull the latest changes
               cd /home/ubuntu/cicd_project/cicd
               git pull
               # Start the server again in the screen session
-              sudo screen -S 146494 -X stuff source /home/ubuntu/cicd_project/cicd_env/bin/activate
-              sudo screen -S 146494 -X stuff python manage.py runserver 0.0.0.0:2914
+              sudo screen -S 150841 -X stuff source /home/ubuntu/cicd_project/cicd_env/bin/activate
+              sudo screen -S 150841 -X stuff python manage.py runserver 0.0.0.0:2914
             else
               echo "No screen session found. Aborting. Hi jagannath"
               exit 1
             fi
           EOF
+
