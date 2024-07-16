@@ -1,3 +1,46 @@
+###name: Continuous Integration
+###
+###on:
+###  push:
+###    branches:
+###      - jagannath
+###
+###concurrency:
+###  group: jagannath
+###  cancel-in-progress: true
+###
+###jobs:
+###  deploy:
+###    runs-on: ubuntu-latest
+###    steps:
+###      - name: Configure SSH
+###        env:
+###          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+###          SSH_HOST: ${{ secrets.SSH_HOST }}
+###          SSH_USER: ${{ secrets.SSH_USER }}
+###        run: |
+###          mkdir -p ~/.ssh/
+###          echo "$SSH_PRIVATE_KEY" > ~/.ssh/github
+###          chmod 600 ~/.ssh/github
+###          cat >> ~/.ssh/config <<END
+###          Host target
+###            HostName $SSH_HOST
+###            User $SSH_USER
+###            IdentityFile ~/.ssh/github
+###            LogLevel ERROR
+###            StrictHostKeyChecking no
+###          END
+###      - name: Run deploy
+###        run: |
+###          ssh target << 'EOF'
+###            sudo chmod -R 777 /home/ubuntu/cicd_project/cicd
+###            git config --global --add safe.directory /home/ubuntu/cicd_project/cicd
+###            source /home/ubuntu/cicd_project/cicd_env/bin/activate
+###            cd /home/ubuntu/cicd_project/cicd
+###            git pull
+###            python manage.py runserver 0.0.0.0:2914
+###          EOF
+##
 ##name: Continuous Integration
 ##
 ##on:
@@ -30,78 +73,99 @@
 ##            LogLevel ERROR
 ##            StrictHostKeyChecking no
 ##          END
+##      - name: Checking Screen
+##        run: |
+##          ssh target "sudo screen -list"
 ##      - name: Run deploy
 ##        run: |
 ##          ssh target << 'EOF'
-##            sudo chmod -R 777 /home/ubuntu/cicd_project/cicd
-##            git config --global --add safe.directory /home/ubuntu/cicd_project/cicd
-##            source /home/ubuntu/cicd_project/cicd_env/bin/activate
-##            cd /home/ubuntu/cicd_project/cicd
-##            git pull
-##            python manage.py runserver 0.0.0.0:2914
+##            # Check if the screen session exists
+##            if sudo screen -list | grep -q 150841; then
+##              echo "Screen session found. Proceeding with deployment."
+##              # Stop the running server in the screen session
+##              sudo screen -S 150841 stuff 'pkill -f python manage.py runserver 0.0.0.0:2914'
+##              sleep 5  # Wait for the server to stop
+##              # Start the server again in the screen session
+##              sudo screen -S 150841 -X stuff source /home/ubuntu/cicd_project/cicd_env/bin/activate
+##              echo "env activated."
+##              # Change to the project directory and pull the latest changes
+##              sudo chmod -R 777 /home/ubuntu/cicd_project/cicd_pro/cicd
+##              git config --global --add safe.directory /home/ubuntu/cicd_project/cicd_pro/cicd
+##              cd /home/ubuntu/cicd_project/cicd_pro/cicd/
+##              git pull
+##              sudo screen -S 150841 -X stuff python manage.py runserver 0.0.0.0:2914
+##              echo "deployed."
+##            else
+##              echo "No screen session found. Aborting. Hi jagannath"
+##              exit 1
+##            fi
 ##          EOF
 #
-#name: Continuous Integration
 #
-#on:
-#  push:
-#    branches:
-#      - jagannath
+##name: Continuous Integration
+##
+##on:
+##  push:
+##    branches:
+##      - jagannath
+##
+##concurrency:
+##  group: jagannath
+##  cancel-in-progress: true
+##
+##jobs:
+##  deploy:
+##    runs-on: ubuntu-latest
+##    steps:
+##      - name: Configure SSH
+##        env:
+##          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+##          SSH_HOST: ${{ secrets.SSH_HOST }}
+##          SSH_USER: ${{ secrets.SSH_USER }}
+##        run: |
+##          mkdir -p ~/.ssh/
+##          echo "$SSH_PRIVATE_KEY" > ~/.ssh/github
+##          chmod 600 ~/.ssh/github
+##          cat >> ~/.ssh/config <<END
+##          Host target
+##            HostName $SSH_HOST
+##            User $SSH_USER
+##            IdentityFile ~/.ssh/github
+##            LogLevel ERROR
+##            StrictHostKeyChecking no
+##          END
+##      - name: Checking Screen
+##        run: |
+##          ssh target "sudo screen -list"
+##      - name: Run deploy
+##        run: |
+##          ssh target << 'EOF'
+##            # Check if the screen session exists
+##            if sudo screen -list | grep -q 150841; then
+##              echo "Screen session found. Proceeding with deployment."
+##              #################################################################
+##              # Stop the running server in the screen session
+##              sudo screen -S 150841 -X stuff 'pkill -f python manage.py runserver 0.0.0.0:2914'
+##              sleep 5  # Wait for the server to stop
+##              #################################################################
+##              # Start the server again in the screen session
+##              sudo screen -S 150841 -X stuff source /home/ubuntu/cicd_project/cicd_env/bin/activate
+##              echo "env activated."
+##              ##################################################################
+##              # Change to the project directory and pull the latest changes
+##              git config --global --add safe.directory /home/ubuntu/cicd_project/cicd
+##              sudo chmod -R 777 /home/ubuntu/cicd_project/cicd
+##              cd /home/ubuntu/cicd_project/cicd/
+##              git pull
+##              sudo screen -S 150841 -X stuff python manage.py runserver 0.0.0.0:2914
+##              echo "deployed."
+##            else
+##              echo "No screen session found. Aborting. Hi jagannath"
+##              exit 1
+##            fi
+##          EOF
 #
-#concurrency:
-#  group: jagannath
-#  cancel-in-progress: true
 #
-#jobs:
-#  deploy:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Configure SSH
-#        env:
-#          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-#          SSH_HOST: ${{ secrets.SSH_HOST }}
-#          SSH_USER: ${{ secrets.SSH_USER }}
-#        run: |
-#          mkdir -p ~/.ssh/
-#          echo "$SSH_PRIVATE_KEY" > ~/.ssh/github
-#          chmod 600 ~/.ssh/github
-#          cat >> ~/.ssh/config <<END
-#          Host target
-#            HostName $SSH_HOST
-#            User $SSH_USER
-#            IdentityFile ~/.ssh/github
-#            LogLevel ERROR
-#            StrictHostKeyChecking no
-#          END
-#      - name: Checking Screen
-#        run: |
-#          ssh target "sudo screen -list"
-#      - name: Run deploy
-#        run: |
-#          ssh target << 'EOF'
-#            # Check if the screen session exists
-#            if sudo screen -list | grep -q 150841; then
-#              echo "Screen session found. Proceeding with deployment."
-#              # Stop the running server in the screen session
-#              sudo screen -S 150841 stuff 'pkill -f python manage.py runserver 0.0.0.0:2914'
-#              sleep 5  # Wait for the server to stop
-#              # Start the server again in the screen session
-#              sudo screen -S 150841 -X stuff source /home/ubuntu/cicd_project/cicd_env/bin/activate
-#              echo "env activated."
-#              # Change to the project directory and pull the latest changes
-#              sudo chmod -R 777 /home/ubuntu/cicd_project/cicd_pro/cicd
-#              git config --global --add safe.directory /home/ubuntu/cicd_project/cicd_pro/cicd
-#              cd /home/ubuntu/cicd_project/cicd_pro/cicd/
-#              git pull
-#              sudo screen -S 150841 -X stuff python manage.py runserver 0.0.0.0:2914
-#              echo "deployed."
-#            else
-#              echo "No screen session found. Aborting. Hi jagannath"
-#              exit 1
-#            fi
-#          EOF
-
-
 #name: Continuous Integration
 #
 #on:
@@ -145,26 +209,29 @@
 #              echo "Screen session found. Proceeding with deployment."
 #              #################################################################
 #              # Stop the running server in the screen session
-#              sudo screen -S 150841 -X stuff 'pkill -f python manage.py runserver 0.0.0.0:2914'
+#              sudo screen -S 150841 -X stuff 'pkill -f python manage.py runserver 0.0.0.0:2914\n'
 #              sleep 5  # Wait for the server to stop
 #              #################################################################
-#              # Start the server again in the screen session
-#              sudo screen -S 150841 -X stuff source /home/ubuntu/cicd_project/cicd_env/bin/activate
-#              echo "env activated."
+#              # Discard local changes and untracked files
+#              cd /home/ubuntu/cicd_project/cicd/
+#              git reset --hard HEAD
+#              git clean -fd
 #              ##################################################################
-#              # Change to the project directory and pull the latest changes
+#              # Pull the latest changes
 #              git config --global --add safe.directory /home/ubuntu/cicd_project/cicd
 #              sudo chmod -R 777 /home/ubuntu/cicd_project/cicd
-#              cd /home/ubuntu/cicd_project/cicd/
 #              git pull
-#              sudo screen -S 150841 -X stuff python manage.py runserver 0.0.0.0:2914
+#              ##################################################################
+#              # Start the server again in the screen session
+#              sudo screen -S 150841 -X stuff 'source /home/ubuntu/cicd_project/cicd_env/bin/activate\n'
+#              echo "env activated."
+#              sudo screen -S 150841 -X stuff 'python manage.py runserver 0.0.0.0:2914\n'
 #              echo "deployed."
 #            else
 #              echo "No screen session found. Aborting. Hi jagannath"
 #              exit 1
 #            fi
 #          EOF
- 
 
 name: Continuous Integration
 
@@ -211,16 +278,11 @@ jobs:
               # Stop the running server in the screen session
               sudo screen -S 150841 -X stuff 'pkill -f python manage.py runserver 0.0.0.0:2914\n'
               sleep 5  # Wait for the server to stop
-              #################################################################
-              # Discard local changes and untracked files
-              cd /home/ubuntu/cicd_project/cicd/
-              git reset --hard HEAD
-              git clean -fd
               ##################################################################
-              # Pull the latest changes
-              git config --global --add safe.directory /home/ubuntu/cicd_project/cicd
-              sudo chmod -R 777 /home/ubuntu/cicd_project/cicd
-              git pull
+              # Force pull the latest changes
+              cd /home/ubuntu/cicd_project/cicd/
+              git fetch origin
+              git reset --hard origin/jagannath
               ##################################################################
               # Start the server again in the screen session
               sudo screen -S 150841 -X stuff 'source /home/ubuntu/cicd_project/cicd_env/bin/activate\n'
