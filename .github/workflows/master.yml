@@ -276,7 +276,7 @@ jobs:
               echo "Screen session found. Proceeding with deployment."
               #################################################################
               # Stop the running server in the screen session
-              sudo screen -S 150841 -X stuff 'pkill -f python manage.py runserver 0.0.0.0:2914\n'
+              sudo screen -S 150841 -X stuff pkill -f python manage.py runserver 0.0.0.0:2914
               sleep 5  # Wait for the server to stop
               ##################################################################
               # Force pull the latest changes
