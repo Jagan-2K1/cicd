@@ -75,6 +75,7 @@ jobs:
           END
       - name: Checking Screen
         run: |
+          ssh target "sudo su"
           ssh target "screen -list"
       - name: Run deploy
         run: |
