@@ -89,7 +89,8 @@ jobs:
               cd /home/ubuntu/cicd_project/cicd
               git pull
               # Start the server again in the screen session
-              sudo screen -S 146494 -X stuff 'source /home/ubuntu/cicd_project/cicd_env/bin/activate && python manage.py runserver 0.0.0.0:2914$(printf \\r)'
+              sudo screen -S 146494 -X stuff source /home/ubuntu/cicd_project/cicd_env/bin/activate
+              sudo screen -S 146494 -X stuff python manage.py runserver 0.0.0.0:2914
             else
               echo "No screen session found. Aborting. Hi jagannath"
               exit 1
