@@ -143,16 +143,19 @@ jobs:
             # Check if the screen session exists
             if sudo screen -list | grep -q 150841; then
               echo "Screen session found. Proceeding with deployment."
+              #################################################################
               # Stop the running server in the screen session
               sudo screen -S 150841 -X stuff 'pkill -f python manage.py runserver 0.0.0.0:2914'
               sleep 5  # Wait for the server to stop
+              #################################################################
               # Start the server again in the screen session
               sudo screen -S 150841 -X stuff source /home/ubuntu/cicd_project/cicd_env/bin/activate
               echo "env activated."
+              ##################################################################
               # Change to the project directory and pull the latest changes
-              sudo chmod -R 777 /home/ubuntu/cicd_project/cicd_pro/cicd
-              git config --global --add safe.directory /home/ubuntu/cicd_project/cicd_pro/cicd
-              cd /home/ubuntu/cicd_project/cicd_pro/cicd/
+              git config --global --add safe.directory /home/ubuntu/cicd_project/cicd
+              sudo chmod -R 777 /home/ubuntu/cicd_project/cicd
+              cd /home/ubuntu/cicd_project/cicd/
               git pull
               sudo screen -S 150841 -X stuff python manage.py runserver 0.0.0.0:2914
               echo "deployed."
