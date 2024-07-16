@@ -77,7 +77,7 @@ jobs:
         run: |
           ssh target << 'EOF'
             # Check if the screen session exists
-            if screen -list | grep -q '146494.jagan'; then
+            if screen -list | grep -q '146494'; then
               echo "Screen session found. Proceeding with deployment."
               # Stop the running server in the screen session
               screen -S 146494.jagan -X stuff 'pkill -f "python manage.py runserver 0.0.0.0:2914"$(printf \\r)'
