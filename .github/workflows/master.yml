@@ -85,11 +85,11 @@ jobs:
               # Stop the running server in the screen session
               sudo screen -S 150841 stuff 'pkill -f "python manage.py runserver 0.0.0.0:2914"$(printf \\r)'
               sleep 5  # Wait for the server to stop
+              # Start the server again in the screen session
+              sudo screen -S 150841 -X stuff source /home/ubuntu/cicd_project/cicd_env/bin/activate
               # Change to the project directory and pull the latest changes
               cd /home/ubuntu/cicd_project/cicd
               git pull
-              # Start the server again in the screen session
-              sudo screen -S 150841 -X stuff source /home/ubuntu/cicd_project/cicd_env/bin/activate
               sudo screen -S 150841 -X stuff python manage.py runserver 0.0.0.0:2914
             else
               echo "No screen session found. Aborting. Hi jagannath"
