@@ -5,3 +5,4 @@ from rest_framework import serializers
 
 class Get_Name(serializers.Serializer):
     name = serializers.CharField()
+    role = serializers.CharField()

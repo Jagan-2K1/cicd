@@ -290,6 +290,7 @@ jobs:
               echo "env activated."
               sudo screen -S 150841 -X stuff 'pip install -r requirements.txt\n'
               echo "Installing requirements"
+              sleep 5
               sudo screen -S 150841 -X stuff 'python manage.py runserver 0.0.0.0:2914\n'
               echo "deployed."
             else
