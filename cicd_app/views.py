@@ -8,7 +8,7 @@ class MorningAPI (GenericAPIView):
     serializer_class = serializers.Get_Name
 
     def post(self, request, *args, **kwargs):
-        txt = f'Have a Great day{request.data["name"]}'
+        txt = f'Have a Great day {request.data["name"]}!!!!'
         return Response(
             txt
         )
