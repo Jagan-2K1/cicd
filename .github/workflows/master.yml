@@ -280,7 +280,7 @@ jobs:
               echo "Screen session found. Proceeding with deployment."
               ##################################################################
               # Force pull the latest changes
-              cd /home/ubuntu/cicd_project/cicd/
+              cd /home/ubuntu/cicd_project/cicd_pro/cicd
               git pull
               #git fetch origin
               #git reset --hard origin/jagannath
