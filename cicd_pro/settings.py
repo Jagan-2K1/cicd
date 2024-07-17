@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'cicd_app',
     'rest_framework',
-    'drf_yasg',
+    'drf_yasg'
 ]
 
 MIDDLEWARE = [
@@ -128,3 +128,10 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# SWAGGER_SETTINGS = {
+#     'DEFAULT_INFO': 'path.to.urls.api_info',
+# }
+# REST_FRAMEWORK = {
+#     'DEFAULT_GENERATOR_CLASS': 'drf_yasg.generators.OpenAPISchemaGenerator',
+# }
