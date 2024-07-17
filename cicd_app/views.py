@@ -11,6 +11,5 @@ class MorningAPI(GenericAPIView):
         txt = f'Have a Great day {request.data["name"]}!!!!'
         txt2 = f'You are selected for the role {request.data["role"]}'
         return Response(
-            txt,
-            txt2
+            txt+' '+txt2
         )
