@@ -281,6 +281,7 @@ jobs:
               ##################################################################
               # Force pull the latest changes
               sudo screen -S 150841 -X stuff 'cd /home/ubuntu/cicd_project/cicd\n'
+              cd /home/ubuntu/cicd_project/cicd\n
               git pull
               #git fetch origin
               #git reset --hard origin/jagannath
