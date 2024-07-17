@@ -288,7 +288,7 @@ jobs:
               # Start the server again in the screen session
               sudo screen -S 150841 -X stuff 'source /home/ubuntu/cicd_project/cicd_env/bin/activate\n'
               echo "env activated."
-              pip install -r requirements.txt
+              sudo screen -S 150841 -X stuff 'pip install -r requirements.txt'
               sleep 5
               sudo screen -S 150841 -X stuff 'python manage.py runserver 0.0.0.0:2914\n'
               echo "deployed."
