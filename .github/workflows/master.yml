@@ -236,9 +236,10 @@
 name: Continuous Integration
 
 on:
-  push:
-    branches:
-      - jagannath
+  workflow_call
+#  push:
+#    branches:
+#      - jagannath
 
 concurrency:
   group: jagannath
