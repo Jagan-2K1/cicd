@@ -11,7 +11,7 @@ concurrency:
 jobs:
   cicd:
     name: Continuous Integration
-    uses: .github/workflows/master.yml
+    uses: ./.github/workflows/master.yml
 
   mail-service:
     name: mail_sending
