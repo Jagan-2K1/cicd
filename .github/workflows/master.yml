@@ -241,9 +241,9 @@ on:
 #    branches:
 #      - jagannath
 
-concurrency:
-  group: jagannath
-  cancel-in-progress: true
+#concurrency:
+#  group: jagannath
+#  cancel-in-progress: true
 
 jobs:
   deploy:
