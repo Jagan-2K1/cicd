@@ -383,5 +383,5 @@ jobs:
 
       - name: Run Python file if deployment failed
         if: failure()
-        run: python ./.github/workflows/mail.py
+        run: python .github/workflows/mail.py
 
