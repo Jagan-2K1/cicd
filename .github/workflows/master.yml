@@ -384,5 +384,5 @@ jobs:
 #        continue-on-error: true
       - name: Run Python file if deployment failed
         if: failure()
-        run: python ./home/ubuntu/cicd_project/cicd/.github/workflows/mail.py
+        run: python .github/workflows/mail.py
 
