@@ -301,13 +301,20 @@ jobs:
               exit 1
             fi
           EOF
-      - name: Checking server Status
-        run: |
-          ps aux | grep 'python manage.py runserver 0.0.0.0:2914' | grep -v grep
-        id: check_server_status
-
-      - name: Print server status
-        run: echo "${{ steps.check_server_status.outputs }}"
+      - name: Wait for server to start
+          run: |
+            ssh target << 'EOF'
+            for i in {1..10}; do
+                if ps aux | grep 'python manage.py runserver 0.0.0.0:2914' | grep -v grep; then
+                    echo "Server is running."
+                    exit 0
+                fi
+                echo "Waiting for the server to start..."
+                sleep 3
+            done
+            echo "Server did not start in time."
+            exit 1
+            EOF
 #############################################################################
 #name: Continuous Integration
 #
