@@ -383,4 +383,4 @@ jobs:
 
       - name: Run Python file if deployment failed
         if: failure()
-        run: python /home/runner/work/cicd/cicd/mail.py
+        run: python /home/runner/work/cicd/mail.py
