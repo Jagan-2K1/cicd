@@ -365,7 +365,6 @@ jobs:
             exit 1
           fi
           EOF
-#        continue-on-error: true
 
       - name: Wait for server to start
         run: |
@@ -381,8 +380,8 @@ jobs:
           echo "Server did not start in time."
           exit 1
           EOF
-#        continue-on-error: true
+
       - name: Run Python file if deployment failed
         if: failure()
-        run: python cd .github/workflows/mail.py
+        run: python ./.github/workflows/mail.py
 
