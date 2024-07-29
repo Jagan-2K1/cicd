@@ -9,13 +9,13 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  cicd:
+  deploy:
     name: Continuous Integration
     uses: ./.github/workflows/master.yml
 
   mail-service:
-    name: mail_sending
-    needs: cicd
+    name: Mail Sending
+    needs: deploy
     runs-on: ubuntu-latest
     steps:
       - name: Configure SSH
