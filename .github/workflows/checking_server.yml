@@ -41,6 +41,6 @@ jobs:
         id: check_server_status
       - name: Print server status
           run:
-            echo "Server status: ${{ steps.check_server_status.outputs }}"
+            echo "Server status: ${{ steps  .check_server_status.outputs }}"
 
 
