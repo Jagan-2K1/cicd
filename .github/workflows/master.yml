@@ -390,7 +390,7 @@ jobs:
 #        run: python /home/runner/work/cicd/cicd/mail.py
       # List files in the root directory of the repository for debugging
       - name: List root directory contents
-        run: ls -al /home/runner/work/cicd/cicd
+        run: echo ls -al /home/runner/work/cicd/cicd
 
       # List files in the .github/workflows directory for debugging
       - name: List .github/workflows directory contents
