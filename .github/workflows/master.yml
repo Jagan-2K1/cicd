@@ -302,13 +302,13 @@
 #            fi
 #          EOF
 #############################################################################
-#name: Continuous Integration
-#
-#on:
-#  push:
-#    branches:
-#      - jagannath
-#
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      - jagannath
+
 #concurrency:
 #  group: jagannath
 #  cancel-in-progress: true
