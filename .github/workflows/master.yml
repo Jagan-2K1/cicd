@@ -384,6 +384,7 @@ jobs:
           exit 1
           EOF
 
+
 #      - name: Run Python file if deployment failed
 #        if: failure()
 #        run: python /home/runner/work/cicd/cicd/mail.py
