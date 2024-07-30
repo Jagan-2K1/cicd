@@ -388,7 +388,7 @@ jobs:
         if: failure()
         run: |
           ssh target << 'EOF'
-          sudo screen -S 150841 -X stuff 'cd /home/ubuntu/cicd_project/cicd.github/workflows\n'
+          sudo screen -S 150841 -X stuff 'cd .github/workflows\n'
           sudo screen -S 150841 -X stuff 'python mail.py'
           EOF
 
