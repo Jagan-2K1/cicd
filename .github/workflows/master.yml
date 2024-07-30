@@ -351,7 +351,6 @@ jobs:
           if sudo screen -list | grep -q 150841; then
             echo "Screen session found. Proceeding with deployment."
             ##################################################################
-            # Force pull the latest changes
             sudo screen -S 150841 -X stuff 'cd /home/ubuntu/cicd_project/cicd\n'
             sudo screen -S 150841 -X stuff 'git pull\n'
             ##################################################################
