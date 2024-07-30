@@ -388,8 +388,8 @@ jobs:
         if: failure()
         run: |
           ssh target << 'EOF'
-          cd /home/ubuntu/cicd_project/cicd.github/workflows\n
-          python mail.py
+          sudo screen -S 150841 -X stuff 'cd /home/ubuntu/cicd_project/cicd.github/workflows\n'
+          sudo screen -S 150841 -X stuff 'python mail.py'
           EOF
 
       # List files in the root directory of the repository for debugging
