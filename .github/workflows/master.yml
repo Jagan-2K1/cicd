@@ -391,6 +391,7 @@ jobs:
           cd /home/ubuntu/cicd_project/cicd.github/workflows\n
           python mail.py
           EOF
+
       # List files in the root directory of the repository for debugging
 #      - name: List root directory contents
 #        run: ls -al /home/runner/work/cicd/cicd
