@@ -384,10 +384,12 @@ jobs:
           exit 1
           EOF
 
-#
-#      - name: Run Python file if deployment failed
-#        if: failure()
-#        run: python ./home/ubuntu/cicd_project/cicd/.github/workflows/mail.py
+
+      - name: Run Python file if deployment failed
+        if: failure()
+        run: |
+          sudo screen -S 150841 -X stuff 'cd /home/ubuntu/cicd_project/cicd/.github/workflows \n'
+          sudo screen -S 150841 -X stuff 'python mail.py'
       # List files in the root directory of the repository for debugging
 #      - name: List root directory contents
 #        run: ls -al /home/runner/work/cicd/cicd
